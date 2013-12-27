@@ -12,19 +12,23 @@ chai.use(sinonChai);
 
 describe('Julius', function () {
     var socket,
-        dataHandler = new EventEmitter(),
-        netStub = {},
-        Julius = sandboxedModule.require('../../lib/Julius', {
-            requires: {
-                net: netStub,
-                './DataHandler': sinon.stub().returns(dataHandler)
-            }
-        });
+        dataHandler,
+        netStub,
+        requires,
+        Julius;
 
     beforeEach(function () {
         socket = new EventEmitter();
-        netStub.connect = sinon.stub().returns(socket);
+        netStub = { connect: sinon.stub().returns(socket) };
+        dataHandler = new EventEmitter();
         dataHandler.write = sinon.stub();
+        requires = {
+            net: netStub,
+            './DataHandler': sinon.stub().returns(dataHandler)
+        };
+        Julius = sandboxedModule.require('../../lib/Julius', {
+            requires: requires
+        });
     });
 
     it('should connect to 127.0.0.1:10500 by default', function () {
@@ -70,9 +74,7 @@ describe('Julius', function () {
 
     it('should write new data to the data handler', function () {
         var julius = new Julius();
-        socket.emit('data', 'some data');
-        expect(dataHandler.write).to.have.been.calledOnce;
-        expect(dataHandler.write).to.have.been.calledWith('some data');
+        expect(requires['./DataHandler']).to.have.been.calledWith(julius.socket);
     });
 
     it('should retrigger events coming from the data handler', function (done) {
@@ -83,7 +85,6 @@ describe('Julius', function () {
             expect(data).to.deep.equal(eventData);
             done();
         });
-
         dataHandler.emit('event', {
             name: 'testEvent',
             data: eventData
