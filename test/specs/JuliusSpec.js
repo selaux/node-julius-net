@@ -12,7 +12,7 @@ chai.use(sinonChai);
 
 describe('Julius', function () {
     var socket,
-        dataHandler = {},
+        dataHandler = new EventEmitter(),
         netStub = {},
         Julius = sandboxedModule.require('../../lib/Julius', {
             requires: {
@@ -73,5 +73,20 @@ describe('Julius', function () {
         socket.emit('data', 'some data');
         expect(dataHandler.write).to.have.been.calledOnce;
         expect(dataHandler.write).to.have.been.calledWith('some data');
+    });
+
+    it('should retrigger events coming from the data handler', function (done) {
+        var julius = new Julius(),
+            eventData = { some: 'data' };
+
+        julius.on('testEvent', function (data) {
+            expect(data).to.deep.equal(eventData);
+            done();
+        });
+
+        dataHandler.emit('event', {
+            name: 'testEvent',
+            data: eventData
+        });
     });
 });
