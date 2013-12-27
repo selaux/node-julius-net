@@ -3,7 +3,9 @@
     "version": "0.0.1",
     "description": "",
     "main": "lib/julius.js",
-    "dependencies": {},
+    "dependencies": {
+        "xml-object-stream": "0.2.0"
+    },
     "devDependencies": {
         "blanket": "1.1.6",
         "chai": "1.8.1",
@@ -14,7 +16,7 @@
         "sandboxed-module": "0.3.0",
         "sinon": "1.7.3",
         "sinon-chai": "2.4.0",
-        "travis-cov": "0.2.4"
+        "through": "2.3.4"
     },
     "scripts": {
         "test": "grunt"
