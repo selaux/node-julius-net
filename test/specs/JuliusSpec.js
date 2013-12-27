@@ -1,6 +1,8 @@
 'use strict';
 
-var sandboxedModule = require('sandboxed-module'),
+var EventEmitter = require('events').EventEmitter,
+
+    sandboxedModule = require('sandboxed-module'),
     sinon = require('sinon'),
     chai = require('chai'),
     expect = chai.expect,
@@ -10,7 +12,8 @@ chai.use(sinonChai);
 
 describe('Julius', function () {
     describe('constructor', function () {
-        var netStub = {},
+        var socket,
+            netStub = {},
             Julius = sandboxedModule.require('../../lib/Julius', {
                 requires: {
                     net: netStub
@@ -18,7 +21,8 @@ describe('Julius', function () {
             });
 
         beforeEach(function () {
-            netStub.connect = sinon.stub();
+            socket = new EventEmitter();
+            netStub.connect = sinon.stub().returns(socket);
         });
 
         it('should connect to 127.0.0.1:10500 by default', function () {
@@ -36,6 +40,18 @@ describe('Julius', function () {
                 },
                 julius = new Julius(options);
             expect(netStub.connect).to.have.been.calledWith(options);
+        });
+
+        it('should trigger an error event when an error occurs with the connection', function (done) {
+            var testError = new Error('test'),
+                julius = new Julius();
+
+            julius.on('error', function (err) {
+                expect(err).to.equal(testError);
+                done();
+            });
+
+            socket.emit('error', testError);
         });
     });
 });
