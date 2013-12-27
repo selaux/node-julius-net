@@ -1,0 +1,4 @@
+.idea/*
+node-julius-net.iml
+node_modules/*
+coverage.html

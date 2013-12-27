@@ -1,0 +1,32 @@
+{
+    "name": "julius-net",
+    "version": "0.0.1",
+    "description": "",
+    "main": "lib/index.js",
+    "dependencies": {},
+    "devDependencies": {
+        "blanket": "1.1.5",
+        "chai": "1.8.1",
+        "grunt": "0.4.1",
+        "grunt-cli": "0.1.9",
+        "grunt-contrib-jshint": "0.6.4",
+        "grunt-mocha-test": "0.7.0",
+        "sandboxed-module": "0.3.0",
+        "sinon": "1.7.3",
+        "sinon-chai": "2.4.0",
+        "travis-cov": "0.2.4"
+    },
+    "scripts": {
+        "test": "grunt"
+    },
+    "keywords": [
+        "julius",
+        "speech recognition",
+        "speech-to-text"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/selaux/node-julius-net"
+    },
+    "license": "MIT"
+}
