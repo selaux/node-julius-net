@@ -12,16 +12,19 @@ chai.use(sinonChai);
 
 describe('Julius', function () {
     var socket,
+        dataHandler = {},
         netStub = {},
         Julius = sandboxedModule.require('../../lib/Julius', {
             requires: {
-                net: netStub
+                net: netStub,
+                './DataHandler': sinon.stub().returns(dataHandler)
             }
         });
 
     beforeEach(function () {
         socket = new EventEmitter();
         netStub.connect = sinon.stub().returns(socket);
+        dataHandler.write = sinon.stub();
     });
 
     it('should connect to 127.0.0.1:10500 by default', function () {
@@ -51,5 +54,24 @@ describe('Julius', function () {
         });
 
         socket.emit('error', testError);
+    });
+
+    it('should trigger an error event when an error occurs with the connection', function (done) {
+        var testError = new Error('test'),
+            julius = new Julius();
+
+        julius.on('error', function (err) {
+            expect(err).to.equal(testError);
+            done();
+        });
+
+        socket.emit('error', testError);
+    });
+
+    it('should write new data to the data handler', function () {
+        var julius = new Julius();
+        socket.emit('data', 'some data');
+        expect(dataHandler.write).to.have.been.calledOnce;
+        expect(dataHandler.write).to.have.been.calledWith('some data');
     });
 });
