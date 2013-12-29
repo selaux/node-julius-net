@@ -1,8 +1,8 @@
 {
     "name": "julius-net",
     "version": "0.0.1",
-    "description": "",
-    "main": "lib/julius.js",
+    "description": "Use the julius speech recognition engine in node through the julius module interface.",
+    "main": "lib/Julius.js",
     "dependencies": {
         "xml2js": "0.4.0"
     },
