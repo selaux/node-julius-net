@@ -22,7 +22,8 @@ describe('DataHandler', function () {
     [
         { xml: '<STARTPROC/>', expectedEvent: 'startProcessing' },
         { xml: '<STARTRECOG/>', expectedEvent: 'startRecognition' },
-        { xml: '<ENDRECOG/>', expectedEvent: 'endRecognition' }
+        { xml: '<ENDRECOG/>', expectedEvent: 'endRecognition' },
+        { xml: '<RECOGFAIL/>', expectedEvent: 'recognitionFail' }
     ].forEach(function (testCase) {
         it('should trigger the ' + testCase.expectedEvent + ' event for ' + testCase.xml, function (done) {
             inputStream.queue(testCase.xml).end();
