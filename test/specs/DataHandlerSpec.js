@@ -46,7 +46,7 @@ describe('DataHandler', function () {
         inputStream.queue(xml).end();
         dataHandler.on('event', function (event) {
             expect(event).to.deep.equal({
-                name: 'recognition',
+                name: 'recognitionSuccess',
                 data: [
                     {
                         score: -3549.97,
