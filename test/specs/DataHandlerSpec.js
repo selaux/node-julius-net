@@ -19,15 +19,21 @@ describe('DataHandler', function () {
         dataHandler = new DataHandler(inputStream);
     });
 
-    it('should trigger the start event on STARTPROC', function (done) {
-        inputStream.queue('<STARTPROC/>\n').end();
-        dataHandler.on('event', function (event) {
-            expect(event).to.deep.equal({
-                name: 'start'
+    [
+        { xml: '<STARTPROC/>', expectedEvent: 'start' },
+        { xml: '<STARTRECOG/>', expectedEvent: 'startRecognition' },
+        { xml: '<ENDRECOG/>', expectedEvent: 'endRecognition' }
+    ].forEach(function (testCase) {
+        it('should trigger the ' + testCase.expectedEvent + ' event for ' + testCase.xml, function (done) {
+            inputStream.queue(testCase.xml).end();
+            dataHandler.on('event', function (event) {
+                expect(event).to.deep.equal({
+                    name: testCase.expectedEvent
+                });
+                done();
             });
-            done();
+            inputStream.resume();
         });
-        inputStream.resume();
     });
 
     it('should trigger the recognition event on RECOGOUT', function (done) {
