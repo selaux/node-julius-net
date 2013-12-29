@@ -20,7 +20,7 @@ describe('DataHandler', function () {
     });
 
     [
-        { xml: '<STARTPROC/>', expectedEvent: 'start' },
+        { xml: '<STARTPROC/>', expectedEvent: 'startProcessing' },
         { xml: '<STARTRECOG/>', expectedEvent: 'startRecognition' },
         { xml: '<ENDRECOG/>', expectedEvent: 'endRecognition' }
     ].forEach(function (testCase) {
