@@ -3,6 +3,8 @@
 [![Build Status](https://travis-ci.org/selaux/node-julius-net.png)](https://travis-ci.org/selaux/node-julius-net)
 [![Build Status](https://david-dm.org/selaux/node-julius-net.png)](https://david-dm.org/selaux/node-julius-net)
 
+Use the julius speech recognition engine in node through the julius module interface.
+
 ## Installation
 
 ```bash
@@ -11,7 +13,36 @@ npm install node-julius-net
 
 ## Usage
 
+Start julius with the module parameter: `julius -C julius.jconf -module` 
+
+```javascript
+var Julius = require('julius-net');
+julius = new Julius({
+    host: 'some.host', // default: 127.0.0.1
+    port: 1234 // default: 10500
+});
+julius.on('recognitionSuccess', function (recognition) {
+    console.log(recognition);
+});
+```
+
+## Events
+
+`startProcessing`: Triggered when julius is ready to process data
+
+`startRecognition`: Triggered when speech is detected
+
+`endRecognition`: Triggered when speech ended
+
+`recognitionSuccess`: A match was found
+
+`recognitionFail`: No match was found
+
 ## Changelog
+
+#### 0.0.1: 2013-12-29
+
+* Initial release
 
 ## License
 
